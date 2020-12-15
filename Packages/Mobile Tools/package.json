@@ -1,0 +1,15 @@
+{
+  "name": "com.edwon.mobiletools",
+  "version": "1.0.0",
+  "displayName": "Mobile Tools",
+  "description": "tools for mobile dev",
+  "unity": "2019.2",
+  "unityRelease": "0f1",
+  "keywords": [],
+  "author": {
+    "name": "Edwon",
+    "email": "edwon@edwon.tv",
+    "url": "https://www.edwon.tv"
+  },
+  "type": "tool"
+}

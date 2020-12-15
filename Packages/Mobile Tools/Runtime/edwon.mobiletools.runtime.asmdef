@@ -1,0 +1,14 @@
+{
+    "name": "edwon.mobiletools.runtime",
+    "references": [
+        "GUID:688cfbbe2a536604ab4aa06ececa1da3"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
+}
