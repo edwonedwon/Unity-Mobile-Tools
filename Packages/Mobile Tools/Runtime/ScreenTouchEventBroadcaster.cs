@@ -4,64 +4,67 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using Lean.Touch;
 
-public class ScreenTouchEventBroadcaster : MonoBehaviour
+namespace Edwon.MobileTools
 {
-    public delegate void OnTouchBeginEvent(Vector2 _screenPos);
-    public delegate void OnTouchUpdateEvent(Vector2 _screenPos, bool startedOverGui); 
-    public delegate void OnTouchEndEvent(Vector2 _screenPos, bool startedOverGui);
-    public static OnTouchBeginEvent onTouchBegin;
-    public static OnTouchUpdateEvent onTouchUpdate;
-    public static OnTouchEndEvent onTouchEnd;
-
-    public bool debugLog;
-
-    void OnTouchBegin(LeanFinger finger)
+    public class ScreenTouchEventBroadcaster : MonoBehaviour
     {
-        if (finger.IsOverGui)
-            return;
+        public delegate void OnTouchBeginEvent(Vector2 _screenPos);
+        public delegate void OnTouchUpdateEvent(Vector2 _screenPos, bool startedOverGui); 
+        public delegate void OnTouchEndEvent(Vector2 _screenPos, bool startedOverGui);
+        public static OnTouchBeginEvent onTouchBegin;
+        public static OnTouchUpdateEvent onTouchUpdate;
+        public static OnTouchEndEvent onTouchEnd;
 
-        if (debugLog)
-            Debug.Log("OnTouchBegin: " + finger.ScreenPosition + " frame: " + Time.frameCount);
+        public bool debugLog;
 
-        if (onTouchBegin != null)
-            onTouchBegin(finger.ScreenPosition);
-    }
+        void OnTouchBegin(LeanFinger finger)
+        {
+            if (finger.IsOverGui)
+                return;
 
-    public void OnTouchUpdate(LeanFinger finger)
-    {
-        if (finger.IsOverGui)
-            return;
+            if (debugLog)
+                Debug.Log("OnTouchBegin: " + finger.ScreenPosition + " frame: " + Time.frameCount);
 
-        if (debugLog)
-            Debug.Log("OnTouchUpdate: " + finger.ScreenPosition + " frame: " + Time.frameCount);
+            if (onTouchBegin != null)
+                onTouchBegin(finger.ScreenPosition);
+        }
 
-        if (onTouchUpdate != null)
-            onTouchUpdate(finger.ScreenPosition, finger.StartedOverGui);
-    }
+        public void OnTouchUpdate(LeanFinger finger)
+        {
+            if (finger.IsOverGui)
+                return;
 
-    public void OnTouchEnd(LeanFinger finger)
-    {
-        if (finger.IsOverGui)
-            return;
-            
-        if (debugLog)
-            Debug.Log("OnTouchEnd: " + finger.ScreenPosition + " frame: " + Time.frameCount);
+            if (debugLog)
+                Debug.Log("OnTouchUpdate: " + finger.ScreenPosition + " frame: " + Time.frameCount);
 
-        if (onTouchEnd != null)
-            onTouchEnd(finger.ScreenPosition, finger.StartedOverGui);
-    }
+            if (onTouchUpdate != null)
+                onTouchUpdate(finger.ScreenPosition, finger.StartedOverGui);
+        }
 
-    void OnEnable()
-    {
-        LeanTouch.OnFingerDown += OnTouchBegin;
-        LeanTouch.OnFingerUpdate += OnTouchUpdate;
-        LeanTouch.OnFingerUp += OnTouchEnd;
-    }
+        public void OnTouchEnd(LeanFinger finger)
+        {
+            if (finger.IsOverGui)
+                return;
+                
+            if (debugLog)
+                Debug.Log("OnTouchEnd: " + finger.ScreenPosition + " frame: " + Time.frameCount);
 
-    void OnDisable()
-    {
-        LeanTouch.OnFingerDown -= OnTouchBegin;
-        LeanTouch.OnFingerUpdate -= OnTouchUpdate;
-        LeanTouch.OnFingerUp -= OnTouchEnd;
+            if (onTouchEnd != null)
+                onTouchEnd(finger.ScreenPosition, finger.StartedOverGui);
+        }
+
+        void OnEnable()
+        {
+            LeanTouch.OnFingerDown += OnTouchBegin;
+            LeanTouch.OnFingerUpdate += OnTouchUpdate;
+            LeanTouch.OnFingerUp += OnTouchEnd;
+        }
+
+        void OnDisable()
+        {
+            LeanTouch.OnFingerDown -= OnTouchBegin;
+            LeanTouch.OnFingerUpdate -= OnTouchUpdate;
+            LeanTouch.OnFingerUp -= OnTouchEnd;
+        }
     }
 }

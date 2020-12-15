@@ -2,70 +2,73 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class ScreenTouchEventReceiverBase : MonoBehaviour
+namespace Edwon.MobileTools
 {
-    public bool debugLog;
-    [Header("Will only ivoke if touch started over UI")]
-    public bool invokeOnlyIfStartedOverGui = false;
-    [Header("Will only invoke Update and End if this object was present when touch began")]
-    public bool invokeOnlyIfWholeLifecycle = true;
-    bool touchBegan = false;
-
-    public abstract void OnTouchBegin(Vector2 screenPos);
-    public abstract void OnTouchUpdate(Vector2 screenPos);
-    public abstract void OnTouchEnd(Vector2 screenPos);
-
-    void OnTouchBeginEvent(Vector2 screenPos)
+    public abstract class ScreenTouchEventReceiverBase : MonoBehaviour
     {
-        if (debugLog)
-            Debug.Log(gameObject.name + " " + this.GetType().Name + " OnTouchBegin");
+        public bool debugLog;
+        [Header("Will only ivoke if touch started over UI")]
+        public bool invokeOnlyIfStartedOverGui = false;
+        [Header("Will only invoke Update and End if this object was present when touch began")]
+        public bool invokeOnlyIfWholeLifecycle = true;
+        bool touchBegan = false;
 
-        OnTouchBegin(screenPos);
+        public abstract void OnTouchBegin(Vector2 screenPos);
+        public abstract void OnTouchUpdate(Vector2 screenPos);
+        public abstract void OnTouchEnd(Vector2 screenPos);
 
-        touchBegan = true;
-    }
+        void OnTouchBeginEvent(Vector2 screenPos)
+        {
+            if (debugLog)
+                Debug.Log(gameObject.name + " " + this.GetType().Name + " OnTouchBegin");
 
-    void OnTouchUpdateEvent(Vector2 screenPos, bool startedOverGUI)
-    {
-        if (!invokeOnlyIfStartedOverGui && startedOverGUI)
-            return;
+            OnTouchBegin(screenPos);
 
-        if (invokeOnlyIfWholeLifecycle && !touchBegan)
-            return;
+            touchBegan = true;
+        }
 
-        if (debugLog)
-            Debug.Log(gameObject.name + " " + this.GetType().Name + " OnTouchUpdate");
+        void OnTouchUpdateEvent(Vector2 screenPos, bool startedOverGUI)
+        {
+            if (!invokeOnlyIfStartedOverGui && startedOverGUI)
+                return;
 
-        OnTouchUpdate(screenPos);
-    }
+            if (invokeOnlyIfWholeLifecycle && !touchBegan)
+                return;
 
-    void OnTouchEndEvent(Vector2 screenPos, bool startedOverGUI)
-    {
-        if (!invokeOnlyIfStartedOverGui && startedOverGUI)
-            return;
+            if (debugLog)
+                Debug.Log(gameObject.name + " " + this.GetType().Name + " OnTouchUpdate");
 
-        if (invokeOnlyIfWholeLifecycle && !touchBegan)
-            return;
-        
-        if (debugLog)
-            Debug.Log(gameObject.name + " " + this.GetType().Name + " OnTouchEnd");
+            OnTouchUpdate(screenPos);
+        }
 
-        OnTouchEnd(screenPos);
+        void OnTouchEndEvent(Vector2 screenPos, bool startedOverGUI)
+        {
+            if (!invokeOnlyIfStartedOverGui && startedOverGUI)
+                return;
 
-        touchBegan = false;
-    }
+            if (invokeOnlyIfWholeLifecycle && !touchBegan)
+                return;
+            
+            if (debugLog)
+                Debug.Log(gameObject.name + " " + this.GetType().Name + " OnTouchEnd");
 
-    void OnEnable()
-    {
-        ScreenTouchEventBroadcaster.onTouchBegin += OnTouchBeginEvent;
-        ScreenTouchEventBroadcaster.onTouchUpdate += OnTouchUpdateEvent;
-        ScreenTouchEventBroadcaster.onTouchEnd += OnTouchEndEvent;
-    }
+            OnTouchEnd(screenPos);
 
-    void OnDisable()
-    {
-        ScreenTouchEventBroadcaster.onTouchBegin -= OnTouchBeginEvent;
-        ScreenTouchEventBroadcaster.onTouchUpdate -= OnTouchUpdateEvent;
-        ScreenTouchEventBroadcaster.onTouchEnd -= OnTouchEndEvent;
+            touchBegan = false;
+        }
+
+        void OnEnable()
+        {
+            ScreenTouchEventBroadcaster.onTouchBegin += OnTouchBeginEvent;
+            ScreenTouchEventBroadcaster.onTouchUpdate += OnTouchUpdateEvent;
+            ScreenTouchEventBroadcaster.onTouchEnd += OnTouchEndEvent;
+        }
+
+        void OnDisable()
+        {
+            ScreenTouchEventBroadcaster.onTouchBegin -= OnTouchBeginEvent;
+            ScreenTouchEventBroadcaster.onTouchUpdate -= OnTouchUpdateEvent;
+            ScreenTouchEventBroadcaster.onTouchEnd -= OnTouchEndEvent;
+        }
     }
 }
