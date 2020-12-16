@@ -7,7 +7,8 @@ namespace Edwon.MobileTools
 {
     public class ScreenTouchEventRelay : ScreenTouchEventReceiverBase
     {
-        public bool ignoreTouchEventsOnAwakeFrame = true;
+        [Header("to prevent events getting called on awake")]
+        public bool ignoreOnAwake = true;
         bool awakeFrame = true;
 
         public UnityEvent onTouchBegin;
@@ -16,7 +17,7 @@ namespace Edwon.MobileTools
 
         void Awake()
         {
-            if (ignoreTouchEventsOnAwakeFrame)
+            if (ignoreOnAwake)
                 awakeFrame = true;
         }
 
@@ -27,7 +28,7 @@ namespace Edwon.MobileTools
 
         public override void OnTouchBegin(Vector2 screenPos)
         {
-            if (ignoreTouchEventsOnAwakeFrame && awakeFrame)
+            if (ignoreOnAwake && awakeFrame)
                 return;
 
             onTouchBegin.Invoke();
@@ -35,7 +36,7 @@ namespace Edwon.MobileTools
 
         public override void OnTouchUpdate(Vector2 screenPos)
         {
-            if (ignoreTouchEventsOnAwakeFrame && awakeFrame)
+            if (ignoreOnAwake && awakeFrame)
                 return;
 
             onTouchUpdate.Invoke();
@@ -43,7 +44,7 @@ namespace Edwon.MobileTools
 
         public override void OnTouchEnd(Vector2 screenPos)
         {
-            if (ignoreTouchEventsOnAwakeFrame && awakeFrame)
+            if (ignoreOnAwake && awakeFrame)
                 return;
 
             onTouchEnd.Invoke();
