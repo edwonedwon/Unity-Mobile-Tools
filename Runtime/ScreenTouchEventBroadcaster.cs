@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+#if EDWON_LEANTOUCH
 using Lean.Touch;
+#endif
 
 namespace Edwon.MobileTools
 {
@@ -17,6 +19,7 @@ namespace Edwon.MobileTools
 
         public bool debugLog;
 
+        #if EDWON_LEANTOUCH
         void OnTouchBegin(LeanFinger finger)
         {
             if (finger.IsOverGui)
@@ -52,19 +55,24 @@ namespace Edwon.MobileTools
             if (onTouchEnd != null)
                 onTouchEnd(finger.ScreenPosition, finger.StartedOverGui);
         }
+        #endif
 
         void OnEnable()
         {
+            #if EDWON_LEANTOUCH
             LeanTouch.OnFingerDown += OnTouchBegin;
             LeanTouch.OnFingerUpdate += OnTouchUpdate;
             LeanTouch.OnFingerUp += OnTouchEnd;
+            #endif
         }
 
         void OnDisable()
         {
+            #if EDWON_LEANTOUCH
             LeanTouch.OnFingerDown -= OnTouchBegin;
             LeanTouch.OnFingerUpdate -= OnTouchUpdate;
             LeanTouch.OnFingerUp -= OnTouchEnd;
+            #endif
         }
     }
 }
